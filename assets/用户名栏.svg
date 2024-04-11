@@ -1,0 +1,12 @@
+
+<svg width="680px" height="100px" viewBox="0 0 680 100"  >
+    <g id="登录页面" stroke="none"  fill="none" >
+        <g id="矩形" transform="translate(-1086, -717)">
+            <g id="用户名栏" transform="translate(1086, 717)">
+                <rect fill="#EAEAEA" x="0" y="0" width="680" height="100" rx="20"/>
+                <path d="M51,55 C44.372583,55 39,49.1797017 39,42 C39,34.8202983 44.372583,29 51,29 C57.627417,29 63,34.8202983 63,42 C63,49.1797017 57.627417,55 51,55 Z M51,55 C63,55 70,60.3333333 72,71 L30,71 C32,60.3333333 39,55 51,55 Z" id="Profile" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+        </g>
+    </g>
+</svg>
+

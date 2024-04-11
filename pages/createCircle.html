@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人脉</title>
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1B1A55;
+            overflow: hidden;
+            font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floatText 5s infinite alternate;
+        }
+
+        @keyframes floatText {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+
+        h1 {
+            font-size: 120px; /* Increase font size */
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            background-color: transparent;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            opacity: 1;
+            animation-timing-function: ease-in-out;
+        }
+
+        @keyframes floatBubble {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Bubble styles */
+        .bubble:nth-child(5) {
+            background-color: #474586;
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 1%;
+        }
+
+        .bubble:nth-child(6) {
+            background-color: #535C91;
+            width: 100px;
+            height: 100px;
+            top: 2%;
+            right: 2%;
+        }
+
+        .bubble:nth-child(7) {
+            background-color: #6a699f;
+            width: 120px;
+            height: 120px;
+            bottom: 10%;
+            left: 2%;
+        }
+
+        .bubble:nth-child(8) {
+            background-color: #535C91;
+            width: 130px;
+            height: 130px;
+            bottom: 2%;
+            right: 2%;
+        }
+
+        .bubble:nth-child(9) {
+            background-color: #a6a4e9;
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 30%;
+            border: 2px solid rgba(58, 48, 167, 0.008); /* 设置白色实心边框 */
+            opacity: 1; /* 设置透明度为60% */
+        }
+
+        .bubble:nth-child(10) {
+            background-color: #535C91;
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 20%;
+        }
+
+        .bubble:nth-child(11) {
+            background-color: #9290C3;
+            width: 170px;
+            height: 170px;
+            bottom: 60%;
+            right: 20%;
+        }
+
+        .bubble:nth-child(12) {
+            background-color: #535C91;
+            width: 160px;
+            height: 160px;
+            bottom: 20%;
+            right: 20%;
+        }
+
+        /* Connecting line styles */
+        .connecting-line {
+            stroke: white;
+            stroke-width: 5;
+            stroke-opacity: 0;
+            stroke-linecap: round;
+            z-index: -1; /* Ensure line is below bubbles */
+            animation: drawLine 1s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes drawLine {
+            from {
+                stroke-opacity: 0;
+            }
+            to {
+                stroke-opacity: 0.4;
+            }
+        }
+
+    </style>
+<body>
+<div class="container">
+    <div class="bubble" style="top: 10px; left: 10px;"></div> <!-- Bubble 1 -->
+    <div class="bubble" style="top: 10px; right: 10px;"></div> <!-- Bubble 2 -->
+    <div class="bubble" style="bottom: 10px; left: 10px;"></div> <!-- Bubble 3 -->
+    <div class="bubble" style="bottom: 10px; right: 10px;"></div> <!-- Bubble 4 -->
+    <div class="bubble" style="top: 10%; left: 2%;"></div> <!-- Bubble 5 -->
+    <div class="bubble" style="top: 2%; right: 2%;"></div> <!-- Bubble 6 -->
+    <div class="bubble" style="bottom: 10%; left: 2%;"></div> <!-- Bubble 7 -->
+    <div class="bubble" style="bottom: 2%; right: 2%;"></div> <!-- Bubble 8 -->
+    <div class="bubble" style="top: 30%; left: 30%;"></div> <!-- Bubble 9 -->
+    <div class="bubble" style="top: 20%; left: 20%;"></div> <!-- Bubble 10 -->
+    <div class="bubble" style="bottom: 60%; right: 20%;"></div> <!-- Bubble 11 -->
+    <div class="bubble" style="bottom: 20%; right: 20%;"></div> <!-- Bubble 12 -->
+    <h1>人脉</h1> <!-- Title -->
+    <svg id="svg-container" width="100%" height="100%" style="position: absolute; z-index: -1;">
+        <!-- Line between Bubble 9 and Bubble 1 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 2 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 3 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 4 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 5 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 6 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 7 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 8 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 10 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 11 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <!-- Line between Bubble 9 and Bubble 12 -->
+        <line class="connecting-line" x1="0" y1="0" x2="0" y2="0"></line>
+    </svg>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const bubbles = document.querySelectorAll('.bubble');
+        const connectingLines = document.querySelectorAll('.connecting-line');
+
+        // 计算气泡的中心点坐标
+        const getBubbleCenter = (bubble) => {
+            const bubbleRect = bubble.getBoundingClientRect();
+            return {
+                x: bubbleRect.left + bubbleRect.width / 2,
+                y: bubbleRect.top + bubbleRect.height / 2
+            };
+        };
+
+        // 更新连线位置
+        const updateConnectingLine = (line, startX, startY, endX, endY) => {
+            line.setAttribute('x1', startX);
+            line.setAttribute('y1', startY);
+            line.setAttribute('x2', endX);
+            line.setAttribute('y2', endY);
+        };
+
+        // 连线位置更新
+        updateConnectingLine(connectingLines[0], ...Object.values(getBubbleCenter(bubbles[8])), ...Object.values(getBubbleCenter(bubbles[6])));
+        updateConnectingLine(connectingLines[1], ...Object.values(getBubbleCenter(bubbles[8])), ...Object.values(getBubbleCenter(bubbles[7])));
+        updateConnectingLine(connectingLines[2], ...Object.values(getBubbleCenter(bubbles[8])), ...Object.values(getBubbleCenter(bubbles[9])));
+        updateConnectingLine(connectingLines[3], ...Object.values(getBubbleCenter(bubbles[8])), ...Object.values(getBubbleCenter(bubbles[10])));
+        updateConnectingLine(connectingLines[4], ...Object.values(getBubbleCenter(bubbles[6])), ...Object.values(getBubbleCenter(bubbles[9])));
+        updateConnectingLine(connectingLines[5], ...Object.values(getBubbleCenter(bubbles[9])), ...Object.values(getBubbleCenter(bubbles[4])));
+        updateConnectingLine(connectingLines[6], ...Object.values(getBubbleCenter(bubbles[6])), ...Object.values(getBubbleCenter(bubbles[4])));
+        updateConnectingLine(connectingLines[7], ...Object.values(getBubbleCenter(bubbles[10])), ...Object.values(getBubbleCenter(bubbles[11])));
+        updateConnectingLine(connectingLines[8], ...Object.values(getBubbleCenter(bubbles[5])), ...Object.values(getBubbleCenter(bubbles[11])));
+        // 气泡动画
+        bubbles.forEach((bubble, index) => {
+            bubble.style.opacity = '1';
+            bubble.style.animation = `floatBubble 4s infinite alternate ${index * 0.2+5}s`;
+        });
+
+        // 连线动画
+        connectingLines.forEach((line, index) => {
+            line.style.strokeOpacity = '0';
+            line.style.animationDelay = `${index * 0.2 + 3}s`;
+        });
+    });
+</script>
+</body>
+</html>

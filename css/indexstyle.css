@@ -1,0 +1,184 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1B1A55;
+    overflow-y:hidden ; /* 允许垂直滚动 */
+    max-width: 2880px;
+    max-height: 1800px;
+}
+canvas {
+    display: block;
+}
+#title  {
+    position: absolute;
+    top: 40%; /* 调整标题位置 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 100px;
+    color: white;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+
+}
+
+.entrance{
+    background: #867CFF;
+    border-radius: 40px;
+    border: 1px solid #867cff;
+    font-family: PingFangSC-Semibold sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #FFFFFF;
+    position: absolute; /* 使用绝对定位 */
+    width: 9% ;
+    height: 7% ;
+    top: 567px;
+    left: 50%;
+    transform: translateX(-50%); /* 水平居中 */
+
+}
+.entrance:hover {
+    background: #cdcbfa; /* 鼠标悬停时的背景颜色 */
+    border:#cdcbfa;
+}
+
+#entranceComponent {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+
+#loginModalOverlay { //从这里开始下面的内容是登录框，overlay是登录框的父级
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */ ;
+    backdrop-filter: blur(20px);
+    z-index: 999;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+/* 登录框全部元素样式设置*/
+#登录框 {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    width: 22%; /* 设置宽度为页面宽度的30% */
+    height: 70%; /* 设置高度为宽度的4:3比例 */
+    margin-top: -16.665vw; /* 上边距为高度的一半的负值 */
+    margin-left: -12.5vw; /* 左边距为宽度的一半的负值 */
+    background-color: white;
+    border-radius: 23px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.login-title {
+    font-size: 40px;
+    color: #1b1a55;
+    text-align: center;
+    margin-top: 50px; /* 向下移动 20px */
+    margin-bottom: 0;
+    font-weight:BOLD;
+    font-family: PingFangSC-Semibold sans-serif;
+}
+
+form {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 50px;
+}
+
+input[type="text"], input[type="password"], input[type="email"]{
+    width: 18vw; /* 设置输入框的宽度为父元素宽度的1/10 */
+    height: 6vh;
+    padding: 0 10px; /* 设置左右内边距为10px，调整文本距离输入框边界的距离 */
+    border: 1px solid #ccc; /* 边框样式保持不变 */
+    border-radius: 10px; /* 边框圆角保持不变，根据实际情况调整 */
+    box-sizing: border-box; /* 确保宽度和高度包括了边框和内边距 */
+    background-color: #EAEAEA; /* 设置背景色为EAEAEA */
+    font-family: Arial, sans-serif; /* 设置字体 */
+    font-size: 16px; /* 设置字体大小 */
+}
+
+button {
+    width: 6vw; /* 设置输入框的宽度为父元素宽度的1/10 */
+    height: 6vh;
+    background-color: #6c63d1;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 23px;
+    font-weight:BOLD;
+    border-radius: 10px;
+    border: 1px solid #6c63d1;
+}
+
+.forgot-password{
+    text-align: right;
+    color: #74719b;
+    margin-right:50px;
+    margin-top:5px;
+    font-weight:lighter;
+    font-family: PingFangSC-Semibold sans-serif;
+    opacity: 0.7;
+    font-size:13px
+
+}
+
+.register{
+    text-align: center;
+    color: #74719b;
+    margin-top:50px;
+    font-weight:lighter;
+    font-family: PingFangSC-Semibold sans-serif;
+    opacity: 0.7;
+    font-size:13px
+
+}/* 到这里为止登录框样式所有元素结束*/
+
+#registerForm{
+    background-color: white;
+    border-radius: 23px;
+    display: none;
+    position: fixed;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    width: 22%; /* 设置宽度为页面宽度的30% */
+    height: 80%; /* 设置高度为宽度的4:3比例 */
+    margin-top: -16.665vw; /* 上边距为高度的一半的负值 */
+    margin-left: -12.5vw; /* 左边距为宽度的一半的负值 */
+
+}
+#register-email-label {
+    margin-bottom:25px;
+
+}
+
+.loginin{
+    margin-top:30px;
+}
+
+.login-link{
+    text-align: right;
+    color: #74719b;
+    margin-right:2px;
+    margin-top:10px;
+    font-weight:lighter;
+    font-family: PingFangSC-Semibold sans-serif;
+    opacity: 0.7;
+    font-size:13px
+}
+
+

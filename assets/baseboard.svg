@@ -1,0 +1,15 @@
+
+<svg width="764px" height="1011px" viewBox="0 0 764 1011" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+    <g id="登录页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="矩形" transform="translate(-1044, -413)">
+            <g id="登录框" transform="translate(1044, 413)">
+                <rect id="底板" stroke="#979797" fill="#FFFFFF" x="0.5" y="0.5"
+                      width="763" height="1010" rx="57"/>
+                <text id="人脉地图" fill="#1B1A55" fill-rule="nonzero" font-family="PingFangSC-Semibold, PingFang SC" font-size="100" font-weight="500">
+                    <tspan x="182" y="207">人脉地图</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
+

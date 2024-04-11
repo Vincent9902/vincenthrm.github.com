@@ -1,0 +1,79 @@
+.login-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 背景板样式 */
+.background {
+    background-color: #FFFFFF;
+    border: 1px solid #979797;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+}
+
+/* 登录框标题样式 */
+.login-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+/* 输入框组样式 */
+.input-group {
+    margin-bottom: 15px;
+}
+
+/* 标签样式 */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #333333;
+}
+
+/* 输入框样式 */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+}
+
+/* 登录按钮样式 */
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #867CFF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #cdcbfa;
+}
+
+/* 链接组样式 */
+.links-group {
+    text-align: center;
+}
+
+.links-group a {
+    margin-right: 10px;
+    color: #333333;
+    text-decoration: none;
+}
+
+.links-group a:hover {
+    text-decoration: underline;
+    color: #555555;
+}

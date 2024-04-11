@@ -1,0 +1,12 @@
+
+<svg width="680px" height="100px" viewBox="0 0 680 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="登录页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="矩形" transform="translate(-1086, -900)">
+            <g id="密码栏" transform="translate(1086, 900)">
+                <rect fill="#EAEAEA" x="0" y="0" width="680" height="100" rx="20"/>
+                <path d="M61.5,42.75 L59.25,42.75 L59.25,38.25 C59.25,32.04 54.21,29 48,29 C41.79,29 36.75,32.04 36.75,38.25 L36.75,42.75 L34.5,42.75 C32.025,42.75 30,44.775 30,47.25 L30,66.5 C30,68.975 32.025,71 34.5,71 L61.5,71 C63.975,71 66,68.975 66,66.5 L66,47.25 C66,44.775 63.975,42.75 61.5,42.75 Z M48.5,62 C46.025,62 44,59.975 44,57.5 C44,55.025 46.025,53 48.5,53 C50.975,53 53,55.025 53,57.5 C53,59.975 50.975,62 48.5,62 Z M60,42.5 L37,42.5 L60,42.5 Z" id="Lock" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+        </g>
+    </g>
+</svg>
+

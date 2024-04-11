@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="../css/mainstyle.css">
+    <style>
+        /* 隐藏弹出表单 */
+        .form-popup {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- 添加节点按钮 -->
+    <div class="add-node"></div>
+    <!-- 搜索框 -->
+    <div class="search-box"></div>
+
+    <!-- 新建选项 -->
+    <!-- 放大缩小轴 -->
+    <div class="zoom-control">
+        <button id="zoom-out">-</button>
+        <label for="zoom-slider"></label>
+        <input type="range" id="zoom-slider" min="1" max="100" value="50">
+        <button id="zoom-in">+</button>
+    </div>
+
+    <!-- 下拉框 -->
+    <div class="dropdown" id="dropdown">
+        <div class="dropdown-item">我</div>
+        <div class="dropdown-item">联系人</div>
+        <div class="dropdown-item">线</div>
+        <div class="dropdown-item">亲密度</div>
+    </div>
+
+    <!-- 弹出表单 -->
+    <div class="form-popup" id="formPopup">
+        <!-- 图片上传 -->
+        <div class="image-upload">
+            <label for="image-input" class="image-upload__label">
+                <svg class="image-upload__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </label>
+            <input id="image-input" type="file" accept="image/*" class="image-upload__input" />
+        </div>
+        <!-- 表单 -->
+        <form>
+            <div class="field-container">
+                <!-- 姓名和性别 -->
+                <div class="name-gender-group">
+                    <label for="name"></label>
+                    <input type="text" id="name" placeholder="姓名" class="field">
+                    <label for="gender"></label>
+                    <input type="text" id="gender" placeholder="性别" class="field">
+                </div>
+                <!-- 职位、公司、生日 -->
+                <div class="job-group">
+                    <label for="position"></label>
+                    <input type="text" id="position" placeholder="职位" class="field">
+                    <label for="company"></label>
+                    <input type="text" id="company" placeholder="公司" class="field">
+                    <label for="birthday"></label>
+                    <input type="text" id="birthday" placeholder="生日" class="field">
+                </div>
+                <!-- 备注 -->
+                <div class="notes-group">
+                    <label for="notes"></label>
+                    <textarea id="notes" placeholder="你记得的关于ta的一切" class="field"></textarea>
+                </div>
+                <!-- 提交按钮 -->
+                <div class="submit-button">
+                    <button type="submit">新建</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 圆形容器 -->
+    <div class="circle-container">
+        <!-- "我"的圆形元素 -->
+        <div class="me-circle"></div>
+        <!-- 亲密度的圆形元素 -->
+        <div class="intimacy-circle"></div>
+    </div>
+</div>
+
+<!-- JavaScript代码 -->
+<script>
+    const addNode = document.querySelector('.add-node');
+    const dropdown = document.querySelector('.dropdown');
+    const formPopup = document.getElementById('formPopup');
+    const meDropdownItem = document.querySelectorAll('.dropdown-item');
+    const circleContainer = document.querySelector('.circle-container');
+    const meCircle = document.querySelector('.me-circle');
+    const intimacyCircle = document.querySelector('.intimacy-circle');
+
+    let isCreatedMe = false;
+    let allContactCircles = [];
+    let creatingMe = false;
+
+    // 添加节点按钮的交互
+    addNode.addEventListener('mouseenter', () => {
+        addNode.classList.add('add-node-hover');
+    });
+    addNode.addEventListener('mouseleave', () => {
+        addNode.classList.remove('add-node-hover');
+    });
+
+    addNode.addEventListener('click', () => {
+        const addNodeRect = addNode.getBoundingClientRect();
+        dropdown.style.display = 'block';
+        dropdown.style.position = 'fixed';
+        dropdown.style.left = `${addNodeRect.left + addNodeRect.width / 2}px`;
+        dropdown.style.top = `${addNodeRect.bottom}px`;
+    });
+
+    // 点击页面其他区域隐藏下拉框和弹出表单
+    document.addEventListener('click', (event) => {
+        const isClickInsideAddNode = addNode.contains(event.target);
+        const isClickInsideDropdown = dropdown.contains(event.target);
+        const isClickInsideFormPopup = formPopup.contains(event.target);
+
+        if (!isClickInsideAddNode && !isClickInsideDropdown && !isClickInsideFormPopup) {
+            dropdown.style.display = 'none';
+            formPopup.style.display = 'none';
+        }
+    });
+
+    // 下拉框选项的交互
+    meDropdownItem.forEach(item => {
+        item.addEventListener('click', () => {
+            if (item.textContent === '我') {
+                creatingMe = true;
+                formPopup.style.display = 'block';
+            } else if (item.textContent === '联系人') {
+                creatingMe = false;
+                formPopup.style.display = 'block';
+            } else if (item.textContent === '亲密度') {
+                if (isCreatedMe) {
+                    createIntimacyCircle();
+                } else {
+                    alert('请先创建"我"的圆形元素');
+                }
+            }
+        });
+    });
+
+    // 表单提交按钮的交互
+    const submitButton = document.querySelector('.submit-button button');
+
+    submitButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const nameInput = document.getElementById('name');
+        const name = nameInput.value.trim();
+
+        if (name) {
+            formPopup.style.display = 'none';
+            if (creatingMe) {
+                createMeCircle();
+                isCreatedMe = true;
+            }
+            // 只有当"我"的圆形元素已创建时，才创建联系人的圆形元素
+            else {
+                // 在第一次点击后创建联系人圆形元素，并传递点击事件的参数
+                document.addEventListener('click', function firstClickHandler(e) {
+                    createContactCircle(name, e);
+                    document.removeEventListener('click', firstClickHandler); // 移除事件监听器，只执行一次
+                });
+            }
+        } else {
+            alert('请输入姓名');
+        }
+    });
+
+    // 创建"我"的圆形元素
+    function createMeCircle() {
+        // 确保meCircle被创建并位于页面中心
+        meCircle.style.display = 'block';
+        meCircle.style.position = 'absolute';
+        meCircle.style.width = '100px';
+        meCircle.style.height = '100px';
+        meCircle.style.borderRadius = '50%';
+        meCircle.style.backgroundColor = '#6c63d1';
+        meCircle.style.left = '50%';
+        meCircle.style.top = '50%';
+        meCircle.style.transform = 'translate(-50%, -50%)'; // 使用translate将圆心定位到页面中心
+
+        // 创建用于显示姓名的元素
+        const nameElement = document.createElement('div');
+        nameElement.classList.add('me-name');
+        nameElement.style.position = 'absolute';
+        nameElement.style.top = '50%';
+        nameElement.style.left = '50%';
+        nameElement.style.transform = 'translate(-50%, -50%)';
+        nameElement.style.fontFamily = 'Helvetica, Arial, sans-serif';
+        nameElement.style.fontSize = '20px';
+        nameElement.style.color = '#fff';
+        nameElement.style.textAlign = 'center';
+        nameElement.textContent = document.getElementById('name').value.trim();
+        meCircle.appendChild(nameElement);
+    }
+
+    // 创建亲密度的圆形元素
+    function createIntimacyCircle() {
+        // 首先确保meCircle已经被创建
+        if (!meCircle.style.display || meCircle.style.display === 'none') {
+            return;
+        }
+
+        // 设置亲密度圆形元素的样式
+        intimacyCircle.style.display = 'block';
+        intimacyCircle.style.position = 'absolute';
+        intimacyCircle.style.border = '2px solid white';
+        intimacyCircle.style.borderRadius = '50%';
+
+        // 计算亲密度圆形元素的半径，这里假设是meCircle半径的4倍
+        const meCircleRadius = meCircle.offsetWidth / 2; // 获取meCircle的半径
+        const intimacyCircleRadius = meCircleRadius * 6; // 设置亲密度圆形元素的半径为meCircle半径的4倍
+
+        // 设置亲密度圆形元素的大小
+        intimacyCircle.style.width = `${intimacyCircleRadius * 2}px`;
+        intimacyCircle.style.height = `${intimacyCircleRadius * 2}px`;
+
+        // 设置亲密度圆形元素的位置，使其与meCircle同心
+        intimacyCircle.style.left = `${meCircle.offsetLeft}px`;
+        intimacyCircle.style.top = `${meCircle.offsetTop}px`;
+
+        // 添加亲密度圆形元素到页面中
+        circleContainer.appendChild(intimacyCircle);
+    }
+
+    // 创建联系人圆形元素
+    function createContactCircle(name, clickEvent) {
+        // 创建一个新的圆形元素
+        const contactCircle = document.createElement('div');
+        contactCircle.classList.add('contact-circle'); // 添加contact-circle类
+
+        // 设置圆形元素的样式和属性
+        contactCircle.style.position = 'fixed';
+        contactCircle.style.width = '100px';
+        contactCircle.style.height = '100px';
+        contactCircle.style.backgroundColor = '#c70e5a';
+        contactCircle.style.borderRadius = '50%';
+        contactCircle.style.pointerEvents = 'none';
+
+        // 将圆形元素添加到页面的特定容器中
+        const circleContainer = document.querySelector('.circle-container');
+        if (circleContainer) {
+            circleContainer.appendChild(contactCircle);
+        }
+
+        // 创建联系人名称文本节点
+        const contactName = document.createTextNode(name);
+        contactCircle.appendChild(contactName);
+
+        // 调整文本样式和位置
+        contactCircle.style.display = 'flex';
+        contactCircle.style.justifyContent = 'center';
+        contactCircle.style.alignItems = 'center';
+        contactCircle.style.color = 'white';
+        contactCircle.style.fontSize = '12px';
+
+        // 获取点击事件的坐标
+        const clickX = clickEvent.clientX;
+        const clickY = clickEvent.clientY;
+
+        // 设置圆形元素的初始位置为点击位置
+        contactCircle.style.left = `${clickX - 50}px`;
+        contactCircle.style.top = `${clickY - 50}px`;
+
+        // 定义移动圆形元素的函数
+        function moveCircle(e) {
+            // 计算鼠标相对于视口的位置
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // 获取.contact-container的偏移量
+            const containerRect = circleContainer.getBoundingClientRect();
+            const containerOffsetX = containerRect.left + window.scrollX;
+            const containerOffsetY = containerRect.top + window.scrollY;
+
+            // 考虑圆形的半径（宽度和高度的一半）
+            const circleRadius = 50; // 因为宽度和高度都是100px
+
+            // 更新圆形元素的位置，使其中心与鼠标位置对齐
+            contactCircle.style.left = `${mouseX - containerOffsetX - circleRadius}px`;
+            contactCircle.style.top = `${mouseY - containerOffsetY - circleRadius}px`;
+        }
+
+        // 添加鼠标移动事件监听器
+        document.addEventListener('mousemove', moveCircle);
+
+        // 定义固定圆形元素的函数
+        function fixCircleAt() {
+            // 移除鼠标移动事件的监听器
+            document.removeEventListener('mousemove', moveCircle);
+            // 移除鼠标点击事件的监听器
+            document.removeEventListener('click', fixCircleAt);
+        }
+
+        // 添加鼠标点击事件监听器，用于固定圆形元素的位置
+        document.addEventListener('click', fixCircleAt);
+
+        // 将联系人圆形元素添加到联系人圆形元素数组中
+        allContactCircles.push(contactCircle);
+        return contactCircle;
+    }
+
+</script>
+</body>
+</html>

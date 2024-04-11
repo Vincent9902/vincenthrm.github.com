@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>HRM map</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/indexstyle.css">
+
+</head>
+<body>
+
+<div id="title">人脉地图</div>
+
+<div id="entranceComponent" style="display: none;">
+    <button class="entrance" >我的地图</button>
+</div>
+
+<div id="loginModalOverlay" style="display: none;"></div>
+<div id="登录框">
+    <h2 class="login-title">人脉地图</h2>
+    <form>
+        <label for="username"></label>
+        <input type="text" id="username" name="username" placeholder="用户名" required>
+        <label for="password"></label>
+        <input type="password" id="password" name="password" placeholder="密码" required>
+        <div class="forgot-password">
+            <a href="#">忘记密码？</a>
+        </div>
+        <div class="register">
+            <a href="#">注册</a>
+        </div>
+        <button type="submit">登录</button>
+    </form>
+</div>
+
+<div id="registerForm" style="display: none; transform: translateY(-100vh);">
+    <h2 class="login-title ">人脉地图</h2>
+    <form>
+        <label for="register-username" id="register-email-label"></label>
+        <input type="text" id="register-username" name="register-username" placeholder="用户名" required>
+        <label for="register-email"></label>
+        <input type="email" id="register-email" name="register-email" placeholder="邮箱" required>
+        <label for="register-password"></label>
+        <input type="password" id="register-password" name="register-password" placeholder="密码" required>
+        <label for="register-confirm-password"></label>
+        <input type="password" id="register-confirm-password" name="register-confirm-password" placeholder="确认密码"  required>
+        <div class="loginin">
+            <a href="#" class="login-link">登录</a>
+        </div>
+        <button type="submit" class="button">注册</button>
+    </form>
+</div>
+
+
+
+<canvas id="myCanvas"></canvas>
+<script>
+    window.onload = function() {
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        const canvasWidth = window.innerWidth;
+        const canvasHeight = window.innerHeight;
+
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        const minRadius = 50;
+        const maxRadius = 150;
+        const bubbleColor = "#535C91";
+        const lineColor = "rgba(255, 255, 255, 0.7)";
+        const lineWidth = 5;
+        const connectionMatrix = [
+            [0, 1, 1, 0, 0, 0, 0, 1],  // 连接矩阵，1表示连接，0表示不连接
+            [1, 0, 1, 0, 0, 1, 0, 0],
+            [1, 1, 0, 1, 0, 0, 0, 0],
+            [0, 0, 1, 0, 1, 1, 0, 0],
+            [0, 0, 0, 1, 0, 1, 1, 0],
+            [0, 1, 0, 1, 1, 0, 1, 0],
+            [0, 0, 0, 0, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0]
+        ];
+
+        let bubbles = [];
+        let lines = [];
+
+        function generateBubble() {
+            let radius = minRadius + Math.random() * (maxRadius - minRadius);
+            let x = radius + Math.random() * (canvasWidth - 2 * radius);
+            let y = radius + Math.random() * (canvasHeight - 2 * radius);
+            let speed = 0.5; // 固定速度为0.5
+            let directionX = Math.random() < 0.5 ? -1 : 1; // 随机方向X轴
+            let directionY = Math.random() < 0.5 ? -1 : 1; // 随机方向Y轴
+            let opacity = 0;
+            let animationStarted = false; // 检查动画是否开始
+
+            for (let i = 0; i < bubbles.length; i++) {
+                let dx = x - bubbles[i].x;
+                let dy = y - bubbles[i].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < radius + bubbles[i].radius + 20 || // 确保气泡之间的间距
+                    x - radius < 0 || x + radius > canvasWidth || // 检查气泡是否超出边界
+                    y - radius < 0 || y + radius > canvasHeight) {
+                    return generateBubble();
+                }
+            }
+
+            return {x, y, radius, speed, directionX, directionY, opacity, animationStarted};
+        }
+
+        function generateLines() {
+            lines = [];
+            for (let i = 0; i < connectionMatrix.length; i++) {
+                for (let j = i + 1; j < connectionMatrix[i].length; j++) {
+                    if (connectionMatrix[i][j] === 1) {
+                        lines.push({
+                            start: bubbles[i],
+                            end: bubbles[j],
+                            progress: 0 // 连线的动画进度
+                        });
+                    }
+                }
+            }
+        }
+
+
+        function drawBackground() {
+            ctx.fillStyle = "#1B1A55";
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        }
+
+
+        function drawBubbles() {
+            // 绘制气泡
+            for (let i = 0; i < bubbles.length; i++) {
+                let bubble = bubbles[i];
+                bubble.x += bubble.speed * bubble.directionX; // 随机运动X轴
+                bubble.y += bubble.speed * bubble.directionY; // 随机运动Y轴
+                bubble.opacity += 0.01;
+                if (bubble.opacity >= 1 && !bubble.animationStarted) { // 当气泡的不透明度达到或超过1时且动画未开始
+                    bubble.animationStarted = true; // 标记动画开始
+                    generateLines(); // 开始生成连线
+                }
+                if (bubble.opacity >= 1) { // 当气泡的不透明度达到或超过1时
+                    bubble.opacity = 1; // 将不透明度设为1
+                }
+                if (bubble.x - bubble.radius < 0 || bubble.x + bubble.radius > canvasWidth || // 检查气泡是否超出边界
+                    bubble.y - bubble.radius < 0 || bubble.y + bubble.radius > canvasHeight) {
+                    bubble.directionX *= -1; // 边缘反向
+                    bubble.directionY *= -1; // 边缘反向
+                }
+                for (let j = 0; j < bubbles.length; j++) {
+                    if (i !== j) {
+                        let dx = bubble.x - bubbles[j].x;
+                        let dy = bubble.y - bubbles[j].y;
+                        let distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < bubble.radius + bubbles[j].radius) {
+                            bubble.directionX *= -1; // 改变X轴方向
+                            bubble.directionY *= -1; // 改变Y轴方向
+                        }
+                    }
+                }
+                ctx.globalAlpha = bubble.opacity;
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.radius,0, 2 * Math.PI);
+                ctx.fillStyle = bubbleColor;
+                ctx.fill();
+            }
+        }
+
+
+        function drawLines() {
+            // 绘制连线
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                ctx.strokeStyle = lineColor; // 使用strokeStyle而不是fillStyle
+                ctx.lineWidth = lineWidth; // 设置连线的宽度
+                ctx.beginPath();
+                ctx.moveTo(line.start.x, line.start.y); // 起点为起始气泡的中心
+                let dx = line.end.x - line.start.x;
+                let dy = line.end.y - line.start.y;
+                let x = line.start.x + dx * line.progress;
+                let y = line.start.y + dy * line.progress;
+                ctx.lineTo(x, y); // 连线从起点开始，逐渐延长到终点
+                ctx.stroke(); // 绘制连线
+            }
+        }
+
+        function animate() {
+            drawBackground();
+            drawLines();
+            drawBubbles();
+
+
+            // 更新连线的动画进度
+            lines.forEach(line => {
+                if (line.progress < 1) {
+                    line.progress += 0.005;
+                } else {
+                    line.progress = 1; // 确保动画结束后保持线的连接
+                }
+            });
+
+            requestAnimationFrame(animate); // 递归调用自身实现动画效果
+        }
+        const entranceButton = document.querySelector('.entrance');
+        const loginModalOverlay = document.getElementById('loginModalOverlay');
+        const loginForm = document.getElementById('登录框');
+
+        function init() {
+            for (let i = 0; i < 8; i++) {
+                bubbles.push(generateBubble());
+            }
+
+            const title = document.getElementById('title');
+            const entranceComponent = document.getElementById('entranceComponent');
+            entranceComponent.style.display = 'none'; // 确保初始时隐藏组件
+
+            setTimeout(() => {
+                title.style.opacity = '1'; // 渐显标题
+                entranceComponent.style.display = 'block'; // 显示组件
+
+                setTimeout(() => {
+                    entranceComponent.style.opacity = '1'; // 渐显组件
+                }, 4000); // 延迟0.5秒后执行组件渐显
+            }, 2000); // 延迟2秒后执行渐显效果和显示组件
+
+            entranceButton.addEventListener('click', showLoginModal);
+
+            animate(); // 开始动画
+        }
+
+        let isLoginModalShown = false;
+        function showLoginModal() {
+            if (!isLoginModalShown) {
+                loginModalOverlay.style.display = 'block';
+                setTimeout(() => {
+                    loginModalOverlay.style.opacity = '1';
+                    showLoginForm();
+                }, 500);
+                isLoginModalShown = true;
+            }
+        }
+
+        function showLoginForm() {
+            loginForm.style.transform = 'translateY(0)';
+            loginForm.style.display = 'block';
+        }
+
+        // 获取注册框元素
+        const registerForm = document.getElementById('registerForm');
+
+        // 隐藏注册框
+        registerForm.style.display = 'none';
+
+// 显示注册框
+        function showRegisterForm() {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            registerForm.style.transform = 'translateY(0)'; // 将注册框移回原位
+        }
+
+// 在登录框中获取注册链接
+        const registerLink = loginForm.querySelector('.register a');
+
+// 添加注册链接点击事件监听器
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault(); // 防止链接默认行为
+            showRegisterForm();
+        });
+
+        const loginLink = registerForm.querySelector('.login-link');
+
+// 添加登录链接点击事件监听器
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault(); // 防止链接默认行为
+            showLoginForm(); // 显示登录框
+            registerForm.style.display = 'none'; // 隐藏注册框
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginButton = document.querySelector('button[type="submit"]');
+
+            loginButton.addEventListener('click', function(event) {
+                event.preventDefault(); // 阻止默认提交行为
+
+                // 跳转到 main.html
+                window.location.href = './pages/main.html';
+            });
+        });
+
+
+        init(); // 调用初始化函数
+    }
+
+
+</script>
+</body>
+</html>
